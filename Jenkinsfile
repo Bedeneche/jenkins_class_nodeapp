@@ -6,7 +6,7 @@ pipeline{
         APP_SERVER = "ec2-54-82-61-48.compute-1.amazonaws.com"
         APP_PORT = "3000"
         APP_USER = "ec2-user"
-        CONTAINER_NAME = "nodejs-app"
+        CONTAINER_NAME = "nodejs-apps"
     }
     stages{
         stage("Checkout source code"){
@@ -17,13 +17,13 @@ pipeline{
 
         stage("Install dependencies"){
             steps{
-                sh"npm ci"
+                sh "npm ci"
             }
         }
 
          stage("Build docker image"){
             steps{
-                sh"
+                sh "
                 docker build \
                 -t ${IMAGE_NAME}:${BUILD_NUMBER} \
                 -t ${IMAGE_NAME}:latest .
@@ -39,7 +39,7 @@ pipeline{
                         passwordVariable: 'DOCKER_TOKEN'
                     )
                 ]){
-                    sh"
+                    sh "
                     echo "$DOCKER_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                     docker push ${IMAGE_NAME}:${BUILD_NUMBER}
                     docker push ${IMAGE_NAME}:latest
