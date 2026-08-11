@@ -23,11 +23,11 @@ pipeline{
 
          stage("Build docker image"){
             steps{
-                sh "
+                sh """
                 docker build \
                 -t ${IMAGE_NAME}:${BUILD_NUMBER} \
                 -t ${IMAGE_NAME}:latest .
-                "
+                """
             }
         }
         stage("Push to docker hub"){
