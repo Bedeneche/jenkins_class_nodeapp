@@ -39,12 +39,12 @@ pipeline{
                         passwordVariable: 'DOCKER_TOKEN'
                     )
                 ]){
-                    sh "
+                    sh """
                     echo "$DOCKER_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                     docker push ${IMAGE_NAME}:${BUILD_NUMBER}
                     docker push ${IMAGE_NAME}:latest
                     docker logout
-                    "
+                    """
                 }
             }
         }
