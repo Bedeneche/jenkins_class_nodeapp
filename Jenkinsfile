@@ -1,52 +1,34 @@
 pipeline{
-    agent any 
+    agent any
+
     environment{
-        DOCKERHUB_USERNAME = "tech365"
-        IMAGE_NAME = "${DOCKERHUB_USERNAME}/nodejs-cicd-app"
-        APP_SERVER = "ec2-54-82-61-48.compute-1.amazonaws.com"
-        APP_PORT = "3000"
-        APP_USER = "ec2-user"
-        CONTAINER_NAME = "nodejs-apps"
+        DOCKER_IMAGE = 'bedeneche/cicd-node-api'
+        DOCKER_CREDS = 'bede'
+        EC2_USER = 'ubuntu'
+        // EC2_HOST = 'EC2_PUBLIC_IP_OR_DNS'
+        CONTAINER_NAME = 'cicd-node-api'
+        APP_PORT = '3000'
+      //  EC2_SSH_CREDS = 'ec2-ssh-key'
     }
-    stages{
-        stage("Checkout source code"){
+}  
+    stages {
+
+        stage("checkout"){
             steps{
                 checkout scm
             }
         }
 
-        stage("Install dependencies"){
-            steps{
-                sh "npm ci"
-            }
-        }
 
-         stage("Build docker image"){
+        stage("install dependencies"){
             steps{
-                sh """
-                docker build \
-                -t ${IMAGE_NAME}:${BUILD_NUMBER} \
-                -t ${IMAGE_NAME}:latest .
-                """
+                sh 'npm ci'
             }
-        }
-        stage("Push to docker hub"){
+        } 
+
+        stage("Test"){
             steps{
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-credentials',
-                        usernameVariable: 'DOCKERHUB_USERNAME',
-                        passwordVariable: 'DOCKER_TOKEN'
-                    )
-                ]){
-                    sh """
-                    echo "$DOCKER_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-                    docker push ${IMAGE_NAME}:${BUILD_NUMBER}
-                    docker push ${IMAGE_NAME}:latest
-                    docker logout
-                    """
-                }
+                sh 'npm test'
             }
-        }
+        }   
     }
-}
