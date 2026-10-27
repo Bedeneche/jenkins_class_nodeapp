@@ -10,8 +10,9 @@ pipeline{
         APP_PORT = '3000'
       //  EC2_SSH_CREDS = 'ec2-ssh-key'
     }
-}  
-    stages {
+
+
+      stages {
 
         stage("checkout"){
             steps{
@@ -32,3 +33,6 @@ pipeline{
             }
         }   
     }
+}  
+  
+
