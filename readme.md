@@ -1,6 +1,6 @@
 # Deploying a Node.js API to AWS EC2 with Jenkins, Docker Hub, and SSH
 
-## 1. project Overview
+## 1. project Overviews
 
 This guide explains how to build a complete Continuous Integration and Continuous Deployment pipeline for a Node.js API.
 
