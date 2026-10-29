@@ -1,11 +1,9 @@
 pipeline{
     agent any 
     environment{
-        DOCKERHUB_USERNAME = "tech365"
+        DOCKERHUB_USERNAME = "bedeneche"
         IMAGE_NAME = "${DOCKERHUB_USERNAME}/nodejs-cicd-app"
-        APP_SERVER = "ec2-54-82-61-48.compute-1.amazonaws.com"
         APP_PORT = "3000"
-        APP_USER = "ec2-user"
         CONTAINER_NAME = "nodejs-apps"
     }
     stages{
@@ -34,7 +32,7 @@ pipeline{
             steps{
                 withCredentials([
                     usernamePassword(
-                        credentialsId: 'dockerhub-credentials',
+                        credentialsId: 'bede',
                         usernameVariable: 'DOCKERHUB_USERNAME',
                         passwordVariable: 'DOCKER_TOKEN'
                     )
